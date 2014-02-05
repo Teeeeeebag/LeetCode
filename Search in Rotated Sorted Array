@@ -1,0 +1,44 @@
+
+
+class Solution {
+public:
+    int search(int A[], int n, int target) {
+        if(n==0)
+           return -1;
+         int pos = -1;
+         binarySearch(A, 0, n-1, target, pos);
+         if(pos==-1)
+            return -1;
+         else
+            return pos;
+    }
+    void binarySearch(int A[], int beg, int end, int target, int &pos){
+       if(beg<=end && pos==-1){
+           int mid = (beg+end)/2;
+           if(target>A[mid]){
+              if(A[mid]<A[end]){
+                 binarySearch(A, mid+1, end, target, pos);
+                 binarySearch(A, beg, mid-1, target, pos);
+              }
+              else {
+                 binarySearch(A, mid+1, end, target, pos);
+                 binarySearch(A, beg, mid-1, target, pos);
+              }
+           }
+           else if(target < A[mid]){
+              if(A[mid]>A[beg]){
+                 binarySearch(A, beg, mid-1, target, pos);
+                 binarySearch(A, mid+1, end, target, pos);
+              }
+              else {
+                 binarySearch(A, beg, mid-1, target, pos);
+                 binarySearch(A, mid+1, end, target, pos);
+              }
+           }
+          else {
+              pos = mid;
+              return;
+           }
+       }
+    }
+};
