@@ -1,0 +1,48 @@
+
+
+/* 
+Given a linked list, swap every two adjacent nodes and return its head.
+
+For example,
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+
+Previously I use pred->next=NULL, that's not right. But in other cases, we probably need to 
+use pred->next = NULL.*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *swapPairs(ListNode *head) {
+        if(!head)
+           return head;
+        ListNode *pred=NULL, *n1=head, *n2 = head->next;
+        while(n1 && n2){
+           ListNode *n2Next = n2->next;
+           if(!pred){
+              head = n2;
+              pred = n1;
+              n2->next = n1;
+              n1 ->next = n2Next;
+              pred->next = n2Next;
+           }
+           else{
+              pred->next = n2;
+              n2->next = n1;
+              pred = n1;
+              pred->next = n2Next;
+              
+           }
+           n1 = n2Next;
+           if(n1)
+              n2 = n1->next;
+        }
+        return head;
+    }
+};
