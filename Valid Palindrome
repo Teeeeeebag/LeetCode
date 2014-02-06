@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        if(s.empty())
+           return 1;
+        string newS;
+        for(string::size_type i=0; i<s.size(); ++i){
+           if((s[i]>='A'&&s[i]<='Z')||(s[i]>='0'&&s[i]<='9')||(s[i]>='a'&&s[i]<='z'))
+              newS.push_back(s[i]);
+        }
+        string::iterator beg=newS.begin(), end = newS.end()-1;
+        while(beg<=end){
+           if(*beg==*end|| *beg -'A'+'a'==*end || *beg-'a'+'A'==*end)
+              ;
+           else
+              return 0;
+           ++beg;
+           --end;
+        }
+        return 1;
+    }
+};
