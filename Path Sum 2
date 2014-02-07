@@ -1,0 +1,54 @@
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > pathSum(TreeNode *root, int sum) {
+        vector<vector<int> > vec;
+        if(!root)
+           return vec;
+        vec = dfs(root);
+        vector<vector<int> > ret;
+        for(int i=0; i<vec.size(); ++i){
+           int curSum = 0;
+           for(int j=0; j<vec[i].size(); ++j){
+              curSum += vec[i][j];
+           }
+           if(curSum == sum){
+              reverse(vec[i].begin(), vec[i].end());
+              ret.push_back(vec[i]);
+           }
+        }
+        return ret;
+    }
+    vector<vector<int> > dfs(TreeNode *node){
+       if(node->left==NULL && node->right==NULL){
+          vector<int> ret;
+          ret.push_back(node->val);
+          vector<vector<int> > vret;
+          vret.push_back(ret);
+          return vret;
+       }
+       vector<vector<int> > lvec, rvec;
+       if(node->left)
+          lvec = dfs(node->left);
+       if(node->right)
+          rvec = dfs(node->right);
+       for(int i=0; i<lvec.size(); ++i)
+          lvec[i].push_back(node->val);
+       for(int i=0; i<rvec.size(); ++i)
+          rvec[i].push_back(node->val);
+       vector<vector<int> > curVec(lvec.begin(), lvec.end());
+       curVec.insert(curVec.end(), rvec.begin(), rvec.end());
+       return curVec;
+       
+    }
+};
