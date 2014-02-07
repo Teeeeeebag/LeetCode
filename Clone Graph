@@ -1,0 +1,39 @@
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(!node)
+           return NULL;
+        UndirectedGraphNode *newNode=NULL;
+        queue<UndirectedGraphNode *> qNode;
+        qNode.push(node);
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> hm;
+        while(!qNode.empty()){
+           UndirectedGraphNode *cur = qNode.front();
+           qNode.pop();
+           if(hm.find(cur) != hm.end())
+              continue;
+           UndirectedGraphNode *copy = new UndirectedGraphNode(cur->label);
+           copy->neighbors = cur->neighbors;
+           for(int i=0; i<cur->neighbors.size(); ++i){
+               qNode.push(cur->neighbors[i]);
+           }
+           if(!newNode)
+              newNode = copy;
+           hm[cur] = copy;
+        }
+        for(auto beg=hm.begin(); beg!=hm.end(); ++beg){
+            for(int i=0; i<beg->second->neighbors.size(); ++i){
+                beg->second->neighbors[i] = hm[beg->second->neighbors[i]];
+            }
+        }
+        return newNode;
+    }
+};
