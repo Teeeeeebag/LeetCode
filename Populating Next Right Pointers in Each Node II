@@ -1,0 +1,36 @@
+
+/* The idea is that use recursion to step down the tree and use iteration 
+to traverse the same layer. Always process the next layer.*/
+
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(root==NULL)
+           return;
+        TreeLinkNode *next = NULL;
+        TreeLinkNode *preNode = NULL;
+        while(root){
+           if(!next) next = root->left?root->left:root->right;
+           if(root->left){
+              if(preNode)
+                 preNode->next = root->left;
+              preNode = root->left;
+           }
+           if(root->right){
+              if(preNode)
+                 preNode ->next = root->right;
+              preNode = root->right;
+           }
+           root = root->next;
+        }
+        connect(next);
+    }
+};
