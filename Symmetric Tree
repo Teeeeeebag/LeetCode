@@ -1,0 +1,35 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
+        if(!root)
+           return 1;
+        TreeNode *lTree = root->left, *rTree = root->right;
+        int asymmetric = 0;
+        treeWalk(lTree, rTree, asymmetric);
+        return !asymmetric;
+    }
+    void treeWalk(TreeNode *left, TreeNode *right, int &asymmetric){
+       if(asymmetric)
+          return;
+       if(left ==NULL && right==NULL)
+          return;
+       if(left && right && left->val == right->val){
+             treeWalk(left->left, right->right, asymmetric);
+             treeWalk(left->right, right->left, asymmetric);
+       }
+       else{
+          asymmetric = 1;
+          return;
+       }
+    }
+    
+};
