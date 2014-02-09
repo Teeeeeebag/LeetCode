@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int> > &matrix, int target) {
+        if(matrix.empty())
+           return 0;
+        int beg=0, end = matrix[0].size()*matrix.size()-1;
+        while(beg<=end){
+           int mid = (beg+end)/2;
+           int x = mid/matrix[0].size(), y = mid%matrix[0].size();
+           if(matrix[x][y]==target)
+              return 1;
+           if(matrix[x][y]>target){
+              end = mid - 1;
+           }
+           else 
+              beg = mid + 1;
+        }
+        return 0;
+    }
+};
