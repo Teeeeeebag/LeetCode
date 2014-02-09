@@ -1,0 +1,25 @@
+
+
+/*Dynamic Programming*/
+
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+       if(s1.size()+s2.size()!=s3.size())
+          return 0;
+       vector<bool> col(s2.size()+1, 0);
+       vector<vector<bool> > mat(s1.size()+1, col);
+       mat[0][0] = 1;
+       for(int i=0; i<mat.size(); ++i){
+          for(int j=0; j<mat[i].size(); ++j){
+             if(i==0 && j>0 && mat[i][j-1] && s2[j-1]==s3[i+j-1])
+                mat[i][j] = 1;
+             if(j==0 && i>0 && mat[i-1][j] && s3[i+j-1]==s1[i-1])
+                mat[i][j] = 1;
+             if(i>0 && j>0 &&((mat[i][j-1] && s2[j-1]==s3[i+j-1]) || (mat[i-1][j] && s3[i+j-1]==s1[i-1])))
+                mat[i][j] = 1;
+          }
+       }
+      return mat[mat.size()-1][mat[0].size()-1];
+    }
+};
