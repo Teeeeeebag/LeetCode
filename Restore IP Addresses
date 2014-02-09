@@ -1,0 +1,45 @@
+
+/*Attention: after vec.push_back() cannot return, we need to continue searching
+valid combinations. */
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> vec;
+        if(s.empty())
+           return vec;
+        dfs(s, "", 0, 0, vec);
+        return vec;
+    }
+    void dfs(string &s, string temp, int start, int num, vector<string> &vec){
+       for(int i=start; i<s.size(); ++i){
+          if(isValid(s, start, i+1)){
+             if(num==2){
+                if(isValid(s, i+1, s.size())){
+                   string s1(s.begin()+start, s.begin()+i+1);
+                   string s2(s.begin()+i+1, s.begin()+s.size());
+                   vec.push_back(temp+ s1 + "." + s2);
+                }
+             }
+             else {
+                string s1(s.begin()+start, s.begin()+i+1);
+                dfs(s, temp+s1+".", i+1, num+1, vec);
+             }
+          }
+       }
+    }
+    bool isValid(string &s, int beg, int end){
+       string substr(s.begin()+beg, s.begin()+end);
+       if(substr.empty())
+          return 0;
+       else if(substr.size()>1 && substr[0]=='0')
+          return 0;
+       stringstream strm;
+       strm << substr;
+       int curNum = -1;
+       strm >> curNum;
+       if(curNum<=255 && curNum >=0)
+          return 1;
+       else 
+          return 0;
+    }
+};
