@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<int> vec;
+        if(numbers.empty())
+           return vec;
+        unordered_map<int, int> hm;
+        for(int i=0; i<numbers.size(); ++i){
+           hm[numbers[i]] = i;
+        }
+        for(int i=0; i<numbers.size(); ++i){
+           auto iter = hm.find(target - numbers[i]);
+           if(iter!=hm.end() && iter->second!=i){
+              if(i<iter->second){
+                 vec.push_back(i+1);
+                 vec.push_back(iter->second+1);
+              }
+              else{
+                 vec.push_back(iter->second+1);
+                 vec.push_back(i+1);
+              }
+              return vec;
+           }
+        }
+    }
+};
