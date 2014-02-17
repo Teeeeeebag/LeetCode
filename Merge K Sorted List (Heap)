@@ -1,0 +1,69 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        if(lists.empty())
+           return NULL;
+        vector<ListNode *> hp;
+        for(int i=0; i<lists.size(); ++i){
+           hp.push_back(lists[i]);
+        }
+        int heapSize = hp.size();
+        for(int i=hp.size()-1; i>=0; --i)
+           maintainHeap(hp, heapSize, i); 
+        ListNode *head = NULL, *prev = NULL, *curNode = NULL;
+        curNode = heapMin(lists, hp, heapSize);
+        while(curNode){
+           if(!prev){
+              head = curNode;
+              prev = curNode;
+           }
+           else{
+              prev->next = curNode;
+              prev = prev->next;
+           }
+           curNode = heapMin(lists, hp, heapSize);
+        }
+        return head;
+        
+    }
+    void maintainHeap(vector<ListNode *> &hp, int &heapSize, int curPos){
+       if(curPos >= heapSize || heapSize==0)
+          return;
+       if(hp[curPos]==NULL){
+          hp[curPos] = hp[heapSize-1];
+          --heapSize;
+          maintainHeap(hp, heapSize, curPos);
+       }
+       int lChild = curPos*2+1, rChild = 2*curPos+2;
+       int min = curPos;
+       if(lChild < heapSize && hp[lChild]->val < hp[min]->val)
+          min = lChild;
+       if(rChild < heapSize && hp[rChild]->val < hp[min]->val)
+          min = rChild;
+       if(min!=curPos){
+          auto temp = hp[curPos];
+          hp[curPos]  = hp[min];
+          hp[min] = temp;
+          maintainHeap(hp, heapSize, min);
+       } 
+    }
+    ListNode *heapMin(vector<ListNode *> &lists, vector<ListNode *> &hp, int &heapSize){
+       if(heapSize==0)
+          return NULL;
+       auto min = hp[0];
+       hp[0] = hp[0]->next;
+       maintainHeap(hp, heapSize, 0);
+       if(min)
+          min->next = NULL;
+       return min;
+    }
+    
+};
