@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        if(n==0)
+           return 0;
+        vector<bool> col(n, false), diag1(2*n, false), diag2(2*n, false);
+        int count = 0;
+        totalQueens(n, 0, col, diag1, diag2, 0, count);
+        return count;
+    }
+    void totalQueens(int n, int cur, vector<bool> col, vector<bool> diag1, vector<bool> diag2, int num, int &count){
+       if(num==n){
+          ++count;
+          return;
+       }
+       for(int i=0; i<n; ++i){
+          if(col[i]==0 && diag1[cur+i]==0 && diag2[n-1-cur+i]==0){
+             col[i] = 1;
+             diag1[cur+i] = 1;
+             diag2[n-1-cur+i] = 1;
+             totalQueens(n, cur+1, col, diag1, diag2, num+1, count);
+             col[i] = 0;
+             diag1[cur+i] = 0;
+             diag2[n-1-cur+i] = 0;
+          }
+       }
+    }
+};
