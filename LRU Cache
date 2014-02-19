@@ -1,0 +1,53 @@
+class CacheEntry{
+public:
+   CacheEntry(int k, int v):key(k), value(v){}
+   friend class LRUCache;
+private:
+   int key;
+   int value;
+};
+class LRUCache{
+public:
+    LRUCache(int capacity) {
+        LRUCapacity = capacity;
+        cache_size = 0;
+    }
+    
+    int get(int key) {
+        if(hm.find(key)!=hm.end()){
+           int tempVal = hm[key]->value;
+           cache.erase(hm[key]);
+           cache.push_back(CacheEntry(key, tempVal));
+           hm[key] = --cache.end();
+           return tempVal;
+        }
+        else 
+           return -1;
+    }
+    
+    void set(int key, int value) {
+        if(hm.find(key)==hm.end()){
+           if(cache_size == LRUCapacity){
+              hm.erase(cache.front().key);
+              cache.pop_front();
+              cache.push_back(CacheEntry(key, value));
+              hm[key] = --cache.end();
+           }
+           else{
+              cache.push_back(CacheEntry(key, value));
+              hm[key] = --cache.end();
+              ++cache_size;
+           }
+        }
+        else {
+              cache.erase(hm[key]);
+              cache.push_back(CacheEntry(key, value));
+              hm[key] = --cache.end();
+        }
+    }
+private:
+   list<CacheEntry> cache;
+   unordered_map<int, list<CacheEntry>::iterator> hm;
+   int LRUCapacity;
+   int cache_size;
+};
