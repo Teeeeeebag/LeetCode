@@ -1,0 +1,67 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        int res = 0;
+        while(!s.empty()){
+           if(!s.empty() && s.back()=='I'){
+              ++res;
+              s.pop_back();
+           }
+           if(!s.empty() && s.back() == 'V'){
+              s.pop_back();
+              if(!s.empty() && s.back() == 'I'){
+                 s.pop_back();
+                 res += 4;
+              }
+              else 
+                 res += 5;
+           }
+           if(!s.empty() && s.back() == 'X'){
+              s.pop_back();
+              if(!s.empty() && s.back()=='I'){
+                 s.pop_back(); 
+                 res += 9;
+              }
+              else
+                 res += 10;
+           }
+           if(!s.empty() && s.back() == 'L'){
+              s.pop_back();
+              if(!s.empty() && s.back()=='X'){
+                 s.pop_back(); 
+                 res += 40;
+              }
+              else
+                 res += 50;
+           }
+           if(!s.empty() && s.back() == 'C'){
+              s.pop_back();
+              if(!s.empty() && s.back()=='X'){
+                 s.pop_back(); 
+                 res += 90;
+              }
+              else
+                 res += 100;
+           }
+           if(!s.empty() && s.back() == 'D'){
+              s.pop_back();
+              if(!s.empty() && s.back()=='C'){
+                 s.pop_back(); 
+                 res += 400;
+              }
+              else
+                 res += 500;
+           }
+           if(!s.empty() && s.back() == 'M'){
+              s.pop_back();
+              if(!s.empty() && s.back()=='C'){
+                 s.pop_back(); 
+                 res += 900;
+              }
+              else
+                 res += 1000;
+           }
+        }
+        return res;
+    }
+};
